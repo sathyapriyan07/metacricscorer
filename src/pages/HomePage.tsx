@@ -1,23 +1,23 @@
 import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
-import Tabs from '../components/layout/Tabs'
 import Card from '../components/ui/Card'
 import SectionHeader from '../components/ui/SectionHeader'
 import LiveBadge from '../components/ui/LiveBadge'
 import StatPill from '../components/ui/StatPill'
 
 const homeTabs = [
-  'Quick Match',
-  'Series',
-  'Tournaments',
-  'Leagues',
-  'Rankings',
-  'Teams',
-  'Players',
+  { label: 'Quick Match', path: '/quick-match' },
+  { label: 'Series', path: '/series' },
+  { label: 'Tournaments', path: '/tournaments' },
+  { label: 'Leagues', path: '/leagues' },
+  { label: 'Rankings', path: '/rankings' },
+  { label: 'Teams', path: '/teams' },
+  { label: 'Players', path: '/players' },
 ]
 
 const HomePage = () => {
-  const [activeTab, setActiveTab] = useState(homeTabs[0])
+  const [activeTab, setActiveTab] = useState(homeTabs[0].label)
 
   return (
     <div className="flex flex-col gap-6">
@@ -25,7 +25,22 @@ const HomePage = () => {
         title="Cricket Simulation Hub"
         subtitle="Live score intelligence meets premium analytics."
       />
-      <Tabs tabs={homeTabs} active={activeTab} onChange={setActiveTab} />
+      <div className="flex flex-wrap gap-2">
+        {homeTabs.map((tab) => (
+          <NavLink
+            key={tab.path}
+            to={tab.path}
+            className={({ isActive }) =>
+              `rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-widest transition ${
+                isActive ? 'bg-electric-500/20 text-electric-400' : 'bg-white/5 text-slate-300'
+              }`
+            }
+            onClick={() => setActiveTab(tab.label)}
+          >
+            {tab.label}
+          </NavLink>
+        ))}
+      </div>
 
       <div className="relative overflow-hidden rounded-3xl bg-section-gradient p-6 lg:p-10">
         <div className="absolute inset-0 bg-hero-grid opacity-60" />
@@ -46,9 +61,12 @@ const HomePage = () => {
               <StatPill label="Overs" value="20" />
               <StatPill label="Venue" value="Wankhede" />
             </div>
-            <button className="mt-6 rounded-2xl bg-gradient-to-r from-live-500 to-danger-500 px-6 py-3 text-sm font-semibold uppercase tracking-widest text-white transition-all duration-300 ease-out hover:scale-[1.02]">
+            <NavLink
+              to="/quick-match"
+              className="mt-6 inline-flex rounded-2xl bg-gradient-to-r from-live-500 to-danger-500 px-6 py-3 text-sm font-semibold uppercase tracking-widest text-white transition-all duration-300 ease-out hover:scale-[1.02]"
+            >
               Start Quick Match
-            </button>
+            </NavLink>
           </div>
           <Card className="bg-navy-900/70">
             <p className="text-xs uppercase tracking-widest text-slate-400">Live Banner</p>
